@@ -5,13 +5,15 @@ var app = express();
 app.set('port', process.env.PORT || 80);
 
 app.get('/run', function(req, res){
-  var execsync = require('child_process').execSync;
+  var exec = require('child_process').exec;
   var query = req.param("q");
   // console.log(query);
-  var result = execsync('osqueryi --json '+query);
-  res.set('Content-Type','text/json; charset=utf-8');
-  //res.set('charset',);
-  res.send(result);
+  exec('osqueryi --json '+query,(error, stdout, stderr)=>{
+    res.set('Content-Type','text/json; charset=utf-8');
+    //res.set('charset',);
+    res.send(stdout);
+  });
+
 });
 
 
